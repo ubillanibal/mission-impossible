@@ -1,6 +1,8 @@
+import Constants from "expo-constants";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import Constants from "expo-constants";
+import { CustomExpoConfig } from "@/app.config";
+
 const {
   firebaseApiKey,
   firebaseAuthDomain,
@@ -9,7 +11,9 @@ const {
   firebaseMessagingSenderId,
   firebaseAppId,
   firebaseMeasurementId,
-} = Constants.expoConfig.firebaseConfig;
+} = (Constants.expoConfig as CustomExpoConfig)?.extra || {};
+
+console.log("Keys:", firebaseApiKey);
 
 const firebaseConfig = {
   apiKey: firebaseApiKey,
