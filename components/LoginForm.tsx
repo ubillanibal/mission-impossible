@@ -1,13 +1,19 @@
-import styles from "./LoginFormStyles"; // Assuming you have a styles file
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { ThemedView } from "@/components/ThemedView";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { auth } from "../firebase/firebase-config";
 
-export default function LoginForm() {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,6 +23,7 @@ export default function LoginForm() {
   const handleSubmit = async () => {
     if (!isLogin && password !== confirmPassword) {
       alert("Passwords do not match!");
+      return;
     }
 
     const mode = isLogin ? "Login" : "Registration";
@@ -38,62 +45,127 @@ export default function LoginForm() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{isLogin ? "Log in" : "Create Account"}</Text>
+    <ThemedView style={styles.container}>
+      <Text style={styles.title}>wElCoM£ 2 SoMe-ApP!!!</Text>
 
-      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
-        placeholder="john@email.tld"
+        placeholder="Email"
+        placeholderTextColor="#0000ff"
         value={email}
         onChangeText={setEmail}
+        autoCapitalize="none"
       />
 
-      <Text style={styles.label}>Password</Text>
       <TextInput
         style={styles.input}
         secureTextEntry
-        placeholder="password"
+        placeholder="Password"
+        placeholderTextColor="#0000ff"
         value={password}
         onChangeText={setPassword}
       />
 
       {!isLogin && (
-        <>
-          <Text style={styles.label}>Confirm Password</Text>
-          <TextInput
-            style={styles.input}
-            secureTextEntry
-            placeholder="password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-          />
-        </>
+        <TextInput
+          style={styles.input}
+          secureTextEntry
+          placeholder="Confirm Password"
+          placeholderTextColor="#0000ff"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+        />
       )}
 
-      {error && <Text>{error}</Text>}
+      {error ? (
+        <Text style={{ color: "#ff0000", marginTop: 4 }}>{error}</Text>
+      ) : null}
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>
-          {isLogin ? "Log in" : "Register Account"}
-        </Text>
+        <Text style={styles.buttonText}>{isLogin ? "LOGIN" : "REGISTER"}</Text>
       </TouchableOpacity>
 
-      <View style={styles.toggleContainer}>
-        <Text>
+      <View style={{ flexDirection: "row", marginTop: 10 }}>
+        <Text style={{ color: "#000" }}>
           {isLogin
             ? "Do you want to create an account?"
             : "Do you already have an account?"}
         </Text>
-        <TouchableOpacity
-          className="toggle-button"
-          onPress={() => setIsLogin(!isLogin)}
-        >
-          <Text style={styles.toggleText}>
+        <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
+          <Text
+            style={{
+              color: "#ff00ff",
+              marginLeft: 6,
+              textDecorationLine: "underline",
+            }}
+          >
             {isLogin ? "Create Account" : "Log in"}
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+
+      <Text style={styles.footer}>© 2025 SoMe-App. All rights reserved.</Text>
+    </ThemedView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffcc00",
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+    padding: 40,
+  },
+  title: {
+    fontSize: 36,
+    color: "#00ff00",
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "right",
+    textDecorationLine: "underline",
+  },
+  input: {
+    width: 120,
+    height: 30,
+    backgroundColor: "#ff0000",
+    color: "#0000ff",
+    marginVertical: 2,
+    borderWidth: 3,
+    borderColor: "#00ffff",
+    paddingLeft: 5,
+    fontSize: 18,
+  },
+  button: {
+    backgroundColor: "#ff00ff",
+    paddingVertical: 6,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 8,
+    alignSelf: "flex-end",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 18,
+    letterSpacing: 1,
+  },
+  footer: {
+    marginTop: 60,
+    color: "#ff00ff",
+    fontSize: 10,
+    alignSelf: "flex-start",
+    fontStyle: "italic",
+  },
+  carouselContainer: {
+    marginTop: 5,
+    width: "100%",
+    height: 80,
+    backgroundColor: "#00ffff",
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
+});
+
+export default LoginForm;

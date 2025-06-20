@@ -1,43 +1,103 @@
-import { Image } from "expo-image";
-import { StyleSheet } from "react-native";
-
-import ParallaxScrollView from "@/components/ParallaxScrollView";
+import OnboardingModal from "@/components/OnboardinModal";
 import { ThemedView } from "@/components/ThemedView";
-import LoginForm from "@/components/LoginForm";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
-export default function HomeScreen() {
+const Profile = () => {
+  const posts = [
+    { id: 1, text: "First post! Hello world." },
+    { id: 2, text: "Another day, another post." },
+    { id: 3, text: "Why is this site so AMAZING!?" },
+  ];
+
+  const [showOnboarding, setShowOnboarding] = useState(true);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
+    <ThemedView style={styles.container}>
+      <Image
+        source={{ uri: "https://i.pravatar.cc/100" }}
+        style={styles.avatar}
+      />
+      <View style={styles.info}>
+        <Text style={styles.name}>Jane Doe</Text>
+        <Text style={styles.age}>Age: 28</Text>
+      </View>
+      <Text style={styles.feedTitle}>POSTS FEED</Text>
+      <View style={styles.feed}>
+        {posts.map((post) => (
+          <View key={post.id} style={styles.post}>
+            <Text style={styles.postText}>{post.text}</Text>
+          </View>
+        ))}
+        <OnboardingModal
+          visible={showOnboarding}
+          onDone={() => setShowOnboarding(false)}
         />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <LoginForm />
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+    </ThemedView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
+  container: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+    backgroundColor: "#ffcc00",
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 16,
+    alignSelf: "center",
+  },
+  info: {
     alignItems: "center",
-    gap: 8,
+    marginBottom: 10,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  name: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  age: {
+    fontSize: 16,
+    color: "#666",
+    marginTop: 4,
+  },
+  feedTitle: {
+    fontSize: 18,
+    fontWeight: "900",
+    backgroundColor: "#ffcc00",
+    color: "#f00",
+    textAlign: "left",
+    marginVertical: 2,
+    padding: 2,
+    letterSpacing: 2,
+  },
+  feed: {
+    flex: 1,
+    backgroundColor: "#ffcc00",
+    borderWidth: 3,
+    borderColor: "#0f0",
+    margin: 0,
+    padding: 0,
+  },
+  post: {
+    backgroundColor: "#f99",
+    margin: 1,
+    padding: 2,
+    borderBottomWidth: 2,
+    borderBottomColor: "#333",
+    minHeight: 40,
+    justifyContent: "center",
+  },
+  postText: {
+    color: "#00f",
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: "left",
   },
 });
+
+export default Profile;
